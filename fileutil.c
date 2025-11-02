@@ -12,8 +12,10 @@
 
 //Displays an array of strings from a 2D array 
 void print2DStrArray(char arr[][STR_MAX], int len){
-    for (int i = 0; i < len; i++){printf("Row [%d]: %s \n", i, arr[i]);}
 	if(len==0){printf("No Array!");}
+	int width = 1;
+	for (int tmp = len - 1; tmp >= 10; tmp /= 10){width++;}
+    for (int i = 0; i < len; i++){printf("Row [%0*d]: %s \n", width, i, arr[i]);}
     printf("\n");
 }
 
@@ -30,6 +32,7 @@ void errorOut(int code){
     /*
     1   : File Not Found
     2   : Incorrect amount of runtime arguments
+	3	: Incorrect Loop iteration
     */
     exit(1);
 }
@@ -114,7 +117,9 @@ char (*loadFile2D(char *filename, int *size))[COLS]
 		trimNL(line);
 
 		//   Expand array if necessary (realloc).
-
+		char (*tmp)[COLS] = realloc(arr, (*size+1) * sizeof(char[COLS]));
+		if(!tmp){free(arr); errorOut(3);}
+		arr = tmp;
 		
 		//   Copy each line from the buffer into the array (use strcpy).
 		strcpy(arr[*size], line);
@@ -123,7 +128,7 @@ char (*loadFile2D(char *filename, int *size))[COLS]
     }
 
 	//Debug
-	print2DStrArray(arr,*size);
+	//print2DStrArray(arr,*size);
 
     
     // Close the file.
@@ -133,20 +138,20 @@ char (*loadFile2D(char *filename, int *size))[COLS]
 	
 	// Return pointer to the array.
 	free(arr);
-	return NULL;
+	return arr;
 }
 
 // Search the array for the target string.
 // Return the found string or NULL if not found.
 char * substringSearchAA(char *target, char **lines, int size)
 {
-
 	return NULL;
 }
 
 char * substringSearch2D(char *target, char (*lines)[COLS], int size)
 {
-    
+	
+
     return NULL;
 }
 
