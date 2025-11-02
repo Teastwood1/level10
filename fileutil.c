@@ -1,8 +1,55 @@
+// Thomas Eastwood
+// 10-26-2025 - CS46 Prof. Brown
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "fileutil.h"
+#include "ansi-colors.h"
+
+#define STR_MAX 100
+
+//Displays an array of strings from a 2D array 
+void print2DStrArray(char arr[][STR_MAX], int len){
+    for (int i = 0; i < len; i++){printf("Row [%d]: %s \n", i, arr[i]);}
+	if(len==0){printf("No Array!");}
+    printf("\n");
+}
+
+//Prints in a color
+void printColor(char str[], char color[]){
+    printf("%s%s%s", color, str, CRESET);
+}
+
+//Custom exit command with more helpful error codes
+void errorOut(int code){
+    printColor("[!]ERROR! Exit code (", RED);
+    printf("%d",code);
+    printColor(")\n", RED);
+    /*
+    1   : File Not Found
+    2   : Incorrect amount of runtime arguments
+    */
+    exit(1);
+}
+
+//Ensure argument count is acceptable
+void checkArgC(int argC, int min, int max){
+    if (!(min <= argC <= max))
+	{
+		fprintf(stderr, "Must supply valid argument\n");
+		errorOut(2);
+	}
+}
+
+//Trims the newline off the end of a string
+void trimNL(char *str) {
+    if (strlen(str) > 0 && str[strlen(str) - 1] == '\n') {
+        str[strlen(str) - 1] = '\0';
+    }
+}
+
 
 // DIRECTIONS
 // Choose whether you are doing the 2D array or
@@ -53,17 +100,39 @@ char (*loadFile2D(char *filename, int *size))[COLS]
 	}
 	
 	// TODO
+	int MAXLINES = 100;
+
 	// Allocate memory for an 2D array, using COLS as the width.
+	char (*arr)[COLS] = malloc(MAXLINES * sizeof(char[COLS]));
+	*size = 0;
+
 	// Read the file line by line into a buffer.
-    //   Trim newline.
-	//   Expand array if necessary (realloc).
-	//   Copy each line from the buffer into the array (use strcpy).
+	char line[COLS];
+	while(fgets(line, sizeof(line), in)){
+		
+		//   Trim newline.
+		trimNL(line);
+
+		//   Expand array if necessary (realloc).
+
+		
+		//   Copy each line from the buffer into the array (use strcpy).
+		strcpy(arr[*size], line);
+		*size = *size + 1;
+    
+    }
+
+	//Debug
+	print2DStrArray(arr,*size);
+
+    
     // Close the file.
+	fclose(in);
 	
 	// The size should be the number of entries in the array.
-	*size = 0;
 	
 	// Return pointer to the array.
+	free(arr);
 	return NULL;
 }
 
