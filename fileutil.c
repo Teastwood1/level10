@@ -146,7 +146,8 @@ char * substringSearch2D(char *target, char (*lines)[COLS], int size)
 {
 	
 	for(int i=0; i < size; i++){
-		if(!strcmp(target,lines[i])){return lines[i];}
+		if(strstr(lines[i],target))
+		{return lines[i];}
 	}
 
     return NULL;
