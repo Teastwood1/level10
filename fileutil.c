@@ -126,18 +126,12 @@ char (*loadFile2D(char *filename, int *size))[COLS]
 		*size = *size + 1;
     
     }
-
-	//Debug
-	//print2DStrArray(arr,*size);
-
-    
     // Close the file.
 	fclose(in);
 	
 	// The size should be the number of entries in the array.
 	
 	// Return pointer to the array.
-	free(arr);
 	return arr;
 }
 
@@ -151,6 +145,9 @@ char * substringSearchAA(char *target, char **lines, int size)
 char * substringSearch2D(char *target, char (*lines)[COLS], int size)
 {
 	
+	for(int i=0; i < size; i++){
+		if(!strcmp(target,lines[i])){return lines[i];}
+	}
 
     return NULL;
 }
@@ -163,5 +160,5 @@ void freeAA(char ** arr, int size)
 
 void free2D(char (*arr)[COLS])
 {
-
+	free(arr);
 }
